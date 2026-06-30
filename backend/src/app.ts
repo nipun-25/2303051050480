@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { loggerMiddleware } from './middleware/logger';
 
+import notificationsRouter from './routes/notifications';
+
 // Configure dotenv to find the root .env file
 dotenv.config({ path: path.join(__dirname, '../../.env') });
 
@@ -20,13 +22,9 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'UP', timestamp: new Date().toISOString() });
 });
 
-// Temporary endpoint for Stage 4 verification
-app.get('/api/v1/notifications', (req, res) => {
-  res.status(200).json({
-    message: "Logger verification response",
-    notifications: []
-  });
-});
+// Mount the notifications router
+app.use('/api/v1/notifications', notificationsRouter);
+
 
 app.listen(port, () => {
   // Use console.log ONLY for server startup notifications (permissible)
